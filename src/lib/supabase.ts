@@ -1,0 +1,182 @@
+import { createClient } from '@supabase/supabase-js'
+import type { Database } from '../types/database'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Variables d\'environnement Supabase manquantes')
+}
+
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+})
+
+// Fonctions utilitaires pour l'authentification
+export const auth = {
+  signIn: async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    })
+    return { data, error }
+  },
+
+  signOut: async () => {
+    const { error } = await supabase.auth.signOut()
+    return { error }
+  },
+
+  getCurrentUser: async () => {
+    const { data: { user }, error } = await supabase.auth.getUser()
+    return { user, error }
+  },
+
+  onAuthStateChange: (callback: (event: string, session: any) => void) => {
+    return supabase.auth.onAuthStateChange(callback)
+  }
+}
+
+// Fonctions utilitaires pour les membres
+export const membres = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('membres')
+      .select(`
+        *,
+        membres_roles (
+          roles (*)
+        )
+      `)
+      .order('nom')
+    return { data, error }
+  },
+
+  getById: async (id: string) => {
+    const { data, error } = await supabase
+      .from('membres')
+      .select(`
+        *,
+        membres_roles (
+          roles (*)
+        )
+      `)
+      .eq('id', id)
+      .single()
+    return { data, error }
+  },
+
+  create: async (membre: any) => {
+    const { data, error } = await supabase
+      .from('membres')
+      .insert(membre)
+      .select()
+      .single()
+    return { data, error }
+  },
+
+  update: async (id: string, updates: any) => {
+    const { data, error } = await supabase
+      .from('membres')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
+
+// Fonctions utilitaires pour les cotisations
+export const cotisations = {
+  getByMembre: async (membreId: string) => {
+    const { data, error } = await supabase
+      .from('cotisations')
+      .select('*')
+      .eq('membre_id', membreId)
+      .order('annee', { ascending: false })
+      .order('mois', { ascending: false })
+    return { data, error }
+  },
+
+  create: async (cotisation: any) => {
+    const { data, error } = await supabase
+      .from('cotisations')
+      .insert(cotisation)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
+
+// Fonctions utilitaires pour les prêts
+export const prets = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('prets')
+      .select(`
+        *,
+        emprunteur:membres!emprunteur_id (nom, prenom)
+      `)
+      .order('date_pret', { ascending: false })
+    return { data, error }
+  },
+
+  create: async (pret: any) => {
+    const { data, error } = await supabase
+      .from('prets')
+      .insert(pret)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
+
+// Fonctions utilitaires pour les configurations
+export const configurations = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('configurations')
+      .select('*')
+      .order('categorie', { ascending: true })
+    return { data, error }
+  },
+
+  getValue: async (cle: string) => {
+    const { data, error } = await supabase
+      .from('configurations')
+      .select('valeur, type_valeur')
+      .eq('cle', cle)
+      .single()
+    
+    if (error) return { data: null, error }
+    
+    // Conversion selon le type
+    let valeur = data.valeur
+    if (data.type_valeur === 'number') {
+      valeur = parseFloat(data.valeur)
+    } else if (data.type_valeur === 'boolean') {
+      valeur = data.valeur === 'true'
+    } else if (data.type_valeur === 'json') {
+      valeur = JSON.parse(data.valeur)
+    }
+    
+    return { data: valeur, error: null }
+  },
+
+  setValue: async (cle: string, valeur: any) => {
+    const { data, error } = await supabase
+      .from('configurations')
+      .update({ 
+        valeur: valeur.toString(),
+        updated_at: new Date().toISOString()
+      })
+      .eq('cle', cle)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
