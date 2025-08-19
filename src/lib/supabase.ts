@@ -92,6 +92,19 @@ export const membres = {
 
 // Fonctions utilitaires pour les cotisations
 export const cotisations = {
+  getByPeriod: async (mois: number, annee: number) => {
+    const { data, error } = await supabase
+      .from('cotisations')
+      .select(`
+        *,
+        membre:membres!membre_id (nom, prenom, photo_url)
+      `)
+      .eq('mois', mois)
+      .eq('annee', annee)
+      .order('created_at', { ascending: false })
+    return { data, error }
+  },
+
   getByMembre: async (membreId: string) => {
     const { data, error } = await supabase
       .from('cotisations')
@@ -106,6 +119,16 @@ export const cotisations = {
     const { data, error } = await supabase
       .from('cotisations')
       .insert(cotisation)
+      .select()
+      .single()
+    return { data, error }
+  },
+
+  update: async (id: string, updates: any) => {
+    const { data, error } = await supabase
+      .from('cotisations')
+      .update(updates)
+      .eq('id', id)
       .select()
       .single()
     return { data, error }
