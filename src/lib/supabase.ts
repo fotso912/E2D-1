@@ -148,10 +148,32 @@ export const prets = {
     return { data, error }
   },
 
+  getById: async (id: string) => {
+    const { data, error } = await supabase
+      .from('prets')
+      .select(`
+        *,
+        emprunteur:membres!emprunteur_id (nom, prenom, photo_url)
+      `)
+      .eq('id', id)
+      .single()
+    return { data, error }
+  },
+
   create: async (pret: any) => {
     const { data, error } = await supabase
       .from('prets')
       .insert(pret)
+      .select()
+      .single()
+    return { data, error }
+  },
+
+  update: async (id: string, updates: any) => {
+    const { data, error } = await supabase
+      .from('prets')
+      .update(updates)
+      .eq('id', id)
       .select()
       .single()
     return { data, error }

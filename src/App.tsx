@@ -5,6 +5,7 @@ import { Login } from './pages/Login'
 import { Dashboard } from './pages/Dashboard'
 import { Membres } from './pages/Membres'
 import { Cotisations } from './pages/Cotisations'
+import { Prets } from './pages/Prets'
 
 // Mock user pour le développement
 const mockUser = {
@@ -64,6 +65,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/membres" element={<Membres />} />
           <Route path="/cotisations" element={<Cotisations />} />
+          <Route path="/prets" element={<Prets />} />
           <Route path="/sport" element={<div>Page Sport (à développer)</div>} />
           <Route path="/rapports" element={<div>Page Rapports (à développer)</div>} />
         </Routes>
