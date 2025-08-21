@@ -180,6 +180,107 @@ export const prets = {
   }
 }
 
+// Fonctions utilitaires pour les sanctions
+export const sanctions = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('sanctions')
+      .select(`
+        *,
+        membre:membres!membre_id (nom, prenom, photo_url),
+        type_sanction:types_sanctions!type_sanction_id (nom, categorie, description)
+      `)
+      .order('date_sanction', { ascending: false })
+    return { data, error }
+  },
+
+  getById: async (id: string) => {
+    const { data, error } = await supabase
+      .from('sanctions')
+      .select(`
+        *,
+        membre:membres!membre_id (nom, prenom, photo_url),
+        type_sanction:types_sanctions!type_sanction_id (nom, categorie, description)
+      `)
+      .eq('id', id)
+      .single()
+    return { data, error }
+  },
+
+  getByMembre: async (membreId: string) => {
+    const { data, error } = await supabase
+      .from('sanctions')
+      .select(`
+        *,
+        type_sanction:types_sanctions!type_sanction_id (nom, categorie, description)
+      `)
+      .eq('membre_id', membreId)
+      .order('date_sanction', { ascending: false })
+    return { data, error }
+  },
+
+  create: async (sanction: any) => {
+    const { data, error } = await supabase
+      .from('sanctions')
+      .insert(sanction)
+      .select()
+      .single()
+    return { data, error }
+  },
+
+  update: async (id: string, updates: any) => {
+    const { data, error } = await supabase
+      .from('sanctions')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
+
+// Fonctions utilitaires pour les types de sanctions
+export const typesSanctions = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('types_sanctions')
+      .select('*')
+      .eq('actif', true)
+      .order('categorie', { ascending: true })
+      .order('nom', { ascending: true })
+    return { data, error }
+  },
+
+  getByCategorie: async (categorie: string) => {
+    const { data, error } = await supabase
+      .from('types_sanctions')
+      .select('*')
+      .eq('categorie', categorie)
+      .eq('actif', true)
+      .order('nom', { ascending: true })
+    return { data, error }
+  },
+
+  create: async (typeSanction: any) => {
+    const { data, error } = await supabase
+      .from('types_sanctions')
+      .insert(typeSanction)
+      .select()
+      .single()
+    return { data, error }
+  },
+
+  update: async (id: string, updates: any) => {
+    const { data, error } = await supabase
+      .from('types_sanctions')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
+
 // Fonctions utilitaires pour les configurations
 export const configurations = {
   getAll: async () => {
