@@ -7,6 +7,7 @@ import { Membres } from './pages/Membres'
 import { Cotisations } from './pages/Cotisations'
 import { Prets } from './pages/Prets'
 import { Sanctions } from './pages/Sanctions'
+import { AidesSociales } from './pages/AidesSociales'
 
 // Mock user pour le développement
 const mockUser = {
@@ -68,6 +69,7 @@ function App() {
           <Route path="/cotisations" element={<Cotisations />} />
           <Route path="/prets" element={<Prets />} />
           <Route path="/sanctions" element={<Sanctions />} />
+          <Route path="/aides" element={<AidesSociales />} />
           <Route path="/sport" element={<div>Page Sport (à développer)</div>} />
           <Route path="/rapports" element={<div>Page Rapports (à développer)</div>} />
         </Routes>

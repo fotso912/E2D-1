@@ -281,6 +281,151 @@ export const typesSanctions = {
   }
 }
 
+// Fonctions utilitaires pour les aides sociales
+export const aidesSociales = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('aides_sociales')
+      .select(`
+        *,
+        beneficiaire:membres!beneficiaire_id (nom, prenom, photo_url),
+        type_aide:types_aides!type_aide_id (nom, montant_defaut, delai_remboursement_mois, description)
+      `)
+      .order('date_aide', { ascending: false })
+    return { data, error }
+  },
+
+  getById: async (id: string) => {
+    const { data, error } = await supabase
+      .from('aides_sociales')
+      .select(`
+        *,
+        beneficiaire:membres!beneficiaire_id (nom, prenom, photo_url),
+        type_aide:types_aides!type_aide_id (nom, montant_defaut, delai_remboursement_mois, description)
+      `)
+      .eq('id', id)
+      .single()
+    return { data, error }
+  },
+
+  getByMembre: async (membreId: string) => {
+    const { data, error } = await supabase
+      .from('aides_sociales')
+      .select(`
+        *,
+        type_aide:types_aides!type_aide_id (nom, montant_defaut, delai_remboursement_mois, description)
+      `)
+      .eq('beneficiaire_id', membreId)
+      .order('date_aide', { ascending: false })
+    return { data, error }
+  },
+
+  create: async (aide: any) => {
+    const { data, error } = await supabase
+      .from('aides_sociales')
+      .insert(aide)
+      .select()
+      .single()
+    return { data, error }
+  },
+
+  update: async (id: string, updates: any) => {
+    const { data, error } = await supabase
+      .from('aides_sociales')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
+
+// Fonctions utilitaires pour les types d'aides
+export const typesAides = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('types_aides')
+      .select('*')
+      .eq('actif', true)
+      .order('nom', { ascending: true })
+    return { data, error }
+  },
+
+  create: async (typeAide: any) => {
+    const { data, error } = await supabase
+      .from('types_aides')
+      .insert(typeAide)
+      .select()
+      .single()
+    return { data, error }
+  },
+
+  update: async (id: string, updates: any) => {
+    const { data, error } = await supabase
+      .from('types_aides')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
+
+// Fonctions utilitaires pour les dettes de fond souverain
+export const dettesFondSouverain = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('dettes_fond_souverain')
+      .select(`
+        *,
+        membre:membres!membre_id (nom, prenom, photo_url)
+      `)
+      .order('date_echeance', { ascending: true })
+    return { data, error }
+  },
+
+  getById: async (id: string) => {
+    const { data, error } = await supabase
+      .from('dettes_fond_souverain')
+      .select(`
+        *,
+        membre:membres!membre_id (nom, prenom, photo_url),
+        aide_sociale:aides_sociales!aide_sociale_id (*)
+      `)
+      .eq('id', id)
+      .single()
+    return { data, error }
+  },
+
+  getByMembre: async (membreId: string) => {
+    const { data, error } = await supabase
+      .from('dettes_fond_souverain')
+      .select('*')
+      .eq('membre_id', membreId)
+      .order('date_echeance', { ascending: true })
+    return { data, error }
+  },
+
+  create: async (dette: any) => {
+    const { data, error } = await supabase
+      .from('dettes_fond_souverain')
+      .insert(dette)
+      .select()
+      .single()
+    return { data, error }
+  },
+
+  update: async (id: string, updates: any) => {
+    const { data, error } = await supabase
+      .from('dettes_fond_souverain')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+    return { data, error }
+  }
+}
+
 // Fonctions utilitaires pour les configurations
 export const configurations = {
   getAll: async () => {

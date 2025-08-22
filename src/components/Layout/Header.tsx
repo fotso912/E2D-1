@@ -63,6 +63,12 @@ export function Header({ user, onLogout }: HeaderProps) {
               Sanctions
             </Link>
             <Link
+              to="/aides"
+              className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Aides
+            </Link>
+            <Link
               to="/sport"
               className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium"
             >
@@ -140,6 +146,12 @@ export function Header({ user, onLogout }: HeaderProps) {
                 className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
               >
                 Sanctions
+              </Link>
+              <Link
+                to="/aides"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+              >
+                Aides
               </Link>
               <Link
                 to="/sport"
