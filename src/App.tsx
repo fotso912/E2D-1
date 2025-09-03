@@ -3,12 +3,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Layout } from './components/Layout/Layout'
 import { Login } from './pages/Login'
 import { Dashboard } from './pages/Dashboard'
+import { Index } from './pages/Index'
 import { Membres } from './pages/Membres'
 import { Cotisations } from './pages/Cotisations'
 import { Prets } from './pages/Prets'
 import { Sanctions } from './pages/Sanctions'
 import { AidesSociales } from './pages/AidesSociales'
 import { Sport } from './pages/Sport'
+import { Rapports } from './pages/Rapports'
 
 // Mock user pour le développement
 const mockUser = {
@@ -64,7 +66,7 @@ function App() {
     <Router>
       <Layout user={user} onLogout={handleLogout}>
         <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/membres" element={<Membres />} />
           <Route path="/cotisations" element={<Cotisations />} />
@@ -72,7 +74,7 @@ function App() {
           <Route path="/sanctions" element={<Sanctions />} />
           <Route path="/aides" element={<AidesSociales />} />
           <Route path="/sport" element={<Sport />} />
-          <Route path="/rapports" element={<div>Page Rapports (à développer)</div>} />
+          <Route path="/rapports" element={<Rapports />} />
         </Routes>
       </Layout>
     </Router>
