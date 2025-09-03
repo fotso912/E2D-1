@@ -11,6 +11,7 @@ import { Sanctions } from './pages/Sanctions'
 import { AidesSociales } from './pages/AidesSociales'
 import { Sport } from './pages/Sport'
 import { Rapports } from './pages/Rapports'
+import { Epargnes } from './pages/Epargnes'
 
 // Mock user pour le développement
 const mockUser = {
@@ -75,6 +76,7 @@ function App() {
           <Route path="/aides" element={<AidesSociales />} />
           <Route path="/sport" element={<Sport />} />
           <Route path="/rapports" element={<Rapports />} />
+          <Route path="/epargnes" element={<Epargnes />} />
         </Routes>
       </Layout>
     </Router>

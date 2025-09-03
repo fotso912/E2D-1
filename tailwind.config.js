@@ -7,6 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        background: 'hsl(0 0% 100%)',
+        foreground: 'hsl(222.2 84% 4.9%)',
+        border: 'hsl(214.3 31.8% 91.4%)',
+        ring: 'hsl(222.2 84% 4.9%)',
+        'ring-offset': 'hsl(0 0% 100%)',
         primary: {
           50: '#eff6ff',
           100: '#dbeafe',

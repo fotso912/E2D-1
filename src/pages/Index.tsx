@@ -167,6 +167,26 @@ export function Index() {
             </div>
           </Link>
 
+          {/* Épargnes */}
+          <Link to="/epargnes" className="group">
+            <div className="card hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-emerald-600" />
+                </div>
+                <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-emerald-600 transition-colors" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Épargnes</h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Épargnes volontaires avec redistribution des intérêts des prêts
+              </p>
+              <div className="flex items-center text-sm text-emerald-600">
+                <TrendingUp className="w-4 h-4 mr-1" />
+                <span>Capital épargné actif</span>
+              </div>
+            </div>
+          </Link>
+
           {/* Sport */}
           <Link to="/sport" className="group">
             <div className="card hover:shadow-lg transition-all duration-300 group-hover:scale-105">
